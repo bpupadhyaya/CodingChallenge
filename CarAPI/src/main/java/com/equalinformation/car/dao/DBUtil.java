@@ -7,13 +7,13 @@ import java.sql.DriverManager;
  * Created by bpupadhyaya on 3/28/17.
  */
 public class DBUtil {
-    private static int CONNECTION = 0;
+    private static int CONNCOUNT = 0;
     Connection connection = null;
 
     public Connection getConnection() {
-        if (CONNECTION == 0) {
+        if (CONNCOUNT == 0) {
             createConnection();
-            ++CONNECTION;
+            ++CONNCOUNT;
         }
 
         return connection;

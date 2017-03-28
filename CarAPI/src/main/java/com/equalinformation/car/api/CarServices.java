@@ -4,9 +4,10 @@ import com.equalinformation.car.dao.CarDAOImpl;
 import com.equalinformation.car.model.Car;
 import com.equalinformation.car.model.CarRatingData;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class CarServices {
     }
 
     // TODO Below is work in progress, so please do not evaluate now.
-    @PUT
+  /*  @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/cars/{carID}")
     public Response addCar(@PathParam("carID") String carID) {
@@ -85,7 +86,7 @@ public class CarServices {
             car.setModel("S");
             car.setYear("2016");
         }
-    }
+    }*/
 
 
 }

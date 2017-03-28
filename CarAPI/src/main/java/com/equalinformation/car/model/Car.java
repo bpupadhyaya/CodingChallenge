@@ -7,10 +7,19 @@ import java.util.List;
  * Created by bpupadhyaya on 3/27/17.
  */
 public class Car {
+    private String carID;
     private String make;
     private String model;
     private String year; // Can be converted to date if date comparison is required.
     private List<Rating> ratings = new ArrayList<Rating>();
+
+    public String getCarID() {
+        return carID;
+    }
+
+    public void setCarID(String carID) {
+        this.carID = carID;
+    }
 
     public String getMake() {
         return make;

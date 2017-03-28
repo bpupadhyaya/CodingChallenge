@@ -7,9 +7,10 @@ import java.util.List;
  * Created by bpupadhyaya on 3/27/17.
  */
 public class CarRatingData {
+    private List<Car> ratings = new ArrayList<Car>();
+    private List<Car> carsOnly = new ArrayList<Car>(); // TODO
 
-    public List<Car> getCars() {
-        List<Car> cars = new ArrayList<Car>();
+    public List<Car> getRatings() {
 
         Rating ratingS = new Rating();
         ratingS.setReviewedBy("Edmunds");
@@ -22,12 +23,13 @@ public class CarRatingData {
         allRatingsForS.add(ratingS);
 
         Car car1 = new Car();
+        car1.setCarID("S1");
         car1.setMake("Tesla");
         car1.setModel("S");
         car1.setYear("2016");
         car1.setRatings(allRatingsForS);
 
-        cars.add(car1);
+        ratings.add(car1);
 
         Rating ratingX = new Rating();
         ratingX.setReviewedBy("Car and Driver");
@@ -40,14 +42,37 @@ public class CarRatingData {
         allRatingsForX.add(ratingX);
 
         Car car2 = new Car();
+        car2.setCarID("X1");
         car2.setMake("Tesla");
         car2.setModel("X");
         car2.setYear("2017");
         car2.setRatings(allRatingsForX);
 
-        cars.add(car2);
+        ratings.add(car2);
 
-        return cars;
+        return ratings;
+    }
+
+    public List<Car> getCarsOnly() {
+
+        Car car1 = new Car();
+        car1.setCarID("S1");
+        car1.setMake("Tesla");
+        car1.setModel("S");
+        car1.setYear("2016");
+
+        carsOnly.add(car1);
+
+        Car car2 = new Car();
+        car2.setCarID("X1");
+        car2.setMake("Tesla");
+        car2.setModel("X");
+        car2.setYear("2017");
+
+        carsOnly.add(car2);
+
+        return carsOnly;
+
     }
 
 }

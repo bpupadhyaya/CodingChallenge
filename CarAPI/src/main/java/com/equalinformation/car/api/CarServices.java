@@ -4,10 +4,9 @@ import com.equalinformation.car.dao.CarDAOImpl;
 import com.equalinformation.car.model.Car;
 import com.equalinformation.car.model.CarRatingData;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -25,34 +24,68 @@ public class CarServices {
     @Path("/ratings")
     public List<Car> getRatings() {
         if (PersistenceCheck.DBREADY) {
-            return dbCarData.getCars();
+            return dbCarData.getRatings();
         } else {
-            return staticCarData.getCars();
+            return staticCarData.getRatings();
         }
     }
 
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/cars")
+    public List<Car> getCarsOnly() {
+        if (PersistenceCheck.DBREADY) {
+            return dbCarData.getCarsOnly();
+        } else {
+            return staticCarData.getCarsOnly();
+        }
+    }
 
+    // TODO Below is work in progress, so please do not evaluate now.
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/cars/{carID}")
+    public Response addCar(@PathParam("carID") String carID) {
+        String result;
+        Car car = new Car();
+        populateCarData(carID, car);
+        staticCarData.getCarsOnly().add(car);
+        result = "Car added: " + car;
 
+        return Response.status(201).entity(result).build();
 
-/*
-    @POST
-    @Produces("application/x-www-form-urlencoded")
-    @Consumes("application/x-www-form-urlencoded")
-    @Path("/addCar")
-    public Form addCar(@FormParam("carID") String carID,
-                              @FormParam("data2") String data2,
-                              @FormParam("data3") String data3,
-                              @FormParam("data4") String data4){
+    }
 
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/cars/{carID}")
+    public Response deleteCar(@PathParam("carID") String carID) {
+        String result;
 
-        Form form = new Form();
-        form.add("data1", carID+" :s1");
-        form.add("data2", data2+" :s2");
-        form.add("data3", data3+" :s3");
-        form.add("data4", data4+" :s4");
+        staticCarData.getCarsOnly().remove(getCarsOnly().size()-1);
+        result = "Car removed. ";
+        System.out.println("New size: "+staticCarData.getCarsOnly().size());
 
-        return form;
-    }*/
+        return Response.status(200).entity(result).build();
+
+    }
+
+    private void populateCarData(String carID, Car car) {
+        // This is temporary method till I complete DAO layer.
+        if(carID.equalsIgnoreCase("X1")) {
+            car.setCarID("X1");
+            car.setMake("Tesla");
+            car.setModel("X");
+            car.setYear("2017");
+
+        } else if(carID.equalsIgnoreCase("S1")) {
+            car.setCarID("S1");
+            car.setMake("Tesla");
+            car.setModel("S");
+            car.setYear("2016");
+        }
+    }
+
 
 }

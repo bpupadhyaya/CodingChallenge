@@ -18,8 +18,8 @@ public class DBUtil {
         String url = "jdbc:mysql://localhost:3306/"; // Your DB details
         String dbName = "tesla";
         String driver = "com.mysql.jdbc.Driver";
-        String userName = "root";
-        String password = "upadhyaya1";
+        String userName = "****";
+        String password = "******";
 
         try {
             Class.forName(driver);

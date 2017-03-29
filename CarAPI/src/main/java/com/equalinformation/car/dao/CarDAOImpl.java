@@ -158,7 +158,7 @@ public class CarDAOImpl implements CarDAO {
             e.printStackTrace();
         }
 
-        if(status > -1) {
+        if(status > 0) {
             return true;
         }
         else {
@@ -184,7 +184,7 @@ public class CarDAOImpl implements CarDAO {
             e.printStackTrace();
         }
 
-        if(status > -1) {
+        if(status > 0) {
             return true;
         }
         else {
@@ -218,7 +218,7 @@ public class CarDAOImpl implements CarDAO {
             e.printStackTrace();
         }
 
-        if(status > -1) {
+        if(status > 0) {
             return true;
         }
         else {
@@ -245,7 +245,7 @@ public class CarDAOImpl implements CarDAO {
             e.printStackTrace();
         }
 
-        if(status > -1) {
+        if(status > 0) {
             return true;
         }
         else {

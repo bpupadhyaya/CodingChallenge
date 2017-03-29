@@ -149,7 +149,7 @@ public class CarDAOImpl implements CarDAO {
 
             preparedStatement.setString(1, car.getCarID());
             preparedStatement.setString(2, car.getMake());
-            preparedStatement.setString(3, car.getMake());
+            preparedStatement.setString(3, car.getModel());
             preparedStatement.setString(4, car.getYear());
 
             status = preparedStatement.executeUpdate(); // row count or 0

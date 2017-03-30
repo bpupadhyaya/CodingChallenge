@@ -22,7 +22,6 @@ public class CarServices {
     private CarDAOImpl carDAO = new CarDAOImpl();
     private CarServicesHelper helper = new CarServicesHelper();
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/cars")
@@ -34,6 +33,12 @@ public class CarServices {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/cars/{carID}")
+    public Car getACarOnly(@PathParam("carID") String carID) {
+        return carDAO.getACarOnly(carID);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -46,6 +51,12 @@ public class CarServices {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ratings/{carID}")
+    public List<Car> getACarRatings(@PathParam("carID") String carID) {
+        return carDAO.getACarRatings(carID);
+    }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -68,7 +79,6 @@ public class CarServices {
         return Response.status(201).entity(result).build();
 
     }
-
 
 
     @DELETE
@@ -111,8 +121,6 @@ public class CarServices {
 
     }
 
-
-
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -137,6 +145,5 @@ public class CarServices {
 
         return Response.status(200).entity(result).build();
     }
-
 
 }

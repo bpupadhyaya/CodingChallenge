@@ -23,11 +23,11 @@ public class CarDAOImpl implements CarDAO {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
-        String selectCarQuery = "SELECT VIN, MAKE, MODEL, YEAR FROM CAR";
+        String selectCarsQuery = "SELECT VIN, MAKE, MODEL, YEAR FROM CAR";
 
         try {
             dbConnection = dbUtil.getConnection();
-            preparedStatement = dbConnection.prepareStatement(selectCarQuery);
+            preparedStatement = dbConnection.prepareStatement(selectCarsQuery);
 
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -140,12 +140,12 @@ public class CarDAOImpl implements CarDAO {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
-        String selectCarQuery = "INSERT INTO CAR(VIN, MAKE, MODEL, YEAR)" +
+        String insertACarQuery = "INSERT INTO CAR(VIN, MAKE, MODEL, YEAR)" +
                 " VALUES(?, ?, ?, ?)";
 
         try {
             dbConnection = dbUtil.getConnection();
-            preparedStatement = dbConnection.prepareStatement(selectCarQuery);
+            preparedStatement = dbConnection.prepareStatement(insertACarQuery);
 
             preparedStatement.setString(1, car.getCarID());
             preparedStatement.setString(2, car.getMake());
@@ -171,11 +171,11 @@ public class CarDAOImpl implements CarDAO {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
-        String selectCarQuery = "DELETE FROM CAR WHERE VIN = ?";
+        String deleteACarQuery = "DELETE FROM CAR WHERE VIN = ?";
 
         try {
             dbConnection = dbUtil.getConnection();
-            preparedStatement = dbConnection.prepareStatement(selectCarQuery);
+            preparedStatement = dbConnection.prepareStatement(deleteACarQuery);
             preparedStatement.setString(1,vin);
 
             status = preparedStatement.executeUpdate(); // row count or 0
@@ -197,12 +197,12 @@ public class CarDAOImpl implements CarDAO {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
-        String selectCarQuery = "INSERT INTO RATING(REVIEWEDBY, SAFETY, PERFORMANCE, TECHNOLOGY, INTERIOR, RELIABILITY, VIN)" +
+        String insertRatingQuery = "INSERT INTO RATING(REVIEWEDBY, SAFETY, PERFORMANCE, TECHNOLOGY, INTERIOR, RELIABILITY, VIN)" +
                 " VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         try {
             dbConnection = dbUtil.getConnection();
-            preparedStatement = dbConnection.prepareStatement(selectCarQuery);
+            preparedStatement = dbConnection.prepareStatement(insertRatingQuery);
 
             preparedStatement.setString(1, rating.getReviewedBy());
             preparedStatement.setInt(2, rating.getSafety());
@@ -231,12 +231,12 @@ public class CarDAOImpl implements CarDAO {
         Connection dbConnection = null;
         PreparedStatement preparedStatement = null;
 
-        String selectCarQuery = "DELETE FROM RATING WHERE VIN = ? AND REVIEWEDBY = ?";
+        String deleteCarQuery = "DELETE FROM RATING WHERE VIN = ? AND REVIEWEDBY = ?";
 
         try {
             dbConnection = dbUtil.getConnection();
-            preparedStatement = dbConnection.prepareStatement(selectCarQuery);
-            preparedStatement.setString(1,vin);
+            preparedStatement = dbConnection.prepareStatement(deleteCarQuery);
+            preparedStatement.setString(1, vin);
             preparedStatement.setString(2, reviewedBy);
 
             status = preparedStatement.executeUpdate(); // row count or 0
@@ -251,6 +251,125 @@ public class CarDAOImpl implements CarDAO {
         else {
             return false;
         }
+    }
+
+    public Car getACarOnly(String vin) {
+        Car car = new Car();
+
+        Connection dbConnection = null;
+        PreparedStatement preparedStatement = null;
+
+        String selectACarQuery = "SELECT VIN, MAKE, MODEL, YEAR FROM CAR WHERE VIN = ?";
+
+        try {
+            dbConnection = dbUtil.getConnection();
+            preparedStatement = dbConnection.prepareStatement(selectACarQuery);
+            preparedStatement.setString(1,vin);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()) {
+                String inVIN = rs.getString("VIN");
+                String make = rs.getString("MAKE");
+                String model = rs.getString("MODEL");
+                String year = rs.getString("YEAR");
+
+                car.setCarID(inVIN);
+                car.setMake(make);
+                car.setModel(model);
+                car.setYear(year);
+
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return car;
+    }
+
+    public List<Car> getACarRatings(String vin) {
+        List<Car> aCarRatings = new ArrayList<Car>();
+
+        Connection dbConnection = null;
+        PreparedStatement preparedStatement = null;
+
+        String selectCarRatingQuery = "SELECT CAR.VIN, CAR.MAKE, CAR.MODEL, CAR.YEAR," +
+                "  RATING.REVIEWEDBY, RATING.SAFETY, RATING.PERFORMANCE, RATING.TECHNOLOGY, RATING.INTERIOR, RATING.RELIABILITY" +
+                " FROM RATING" +
+                " INNER JOIN CAR ON RATING.VIN = CAR.VIN" +
+                " WHERE CAR.VIN = ?";
+
+        try {
+            dbConnection = dbUtil.getConnection();
+            preparedStatement = dbConnection.prepareStatement(selectCarRatingQuery);
+            preparedStatement.setString(1,vin);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()) {
+                String inVIN = rs.getString("VIN");
+                String make = rs.getString("MAKE");
+                String model = rs.getString("MODEL");
+                String year = rs.getString("YEAR");
+
+                String reviewedBy = rs.getString("REVIEWEDBY");
+                int safety = rs.getInt("SAFETY");
+                int performance = rs.getInt("PERFORMANCE");
+                int technology = rs.getInt("TECHNOLOGY");
+                int interior = rs.getInt("INTERIOR");
+                int reliability = rs.getInt("RELIABILITY");
+                List<Rating> ratings = new ArrayList<Rating>();
+                Rating rating = new Rating();
+                rating.setReviewedBy(reviewedBy);
+                rating.setSafety(safety);
+                rating.setPerformance(performance);
+                rating.setTechnology(technology);
+                rating.setInterior(interior);
+                rating.setReliability(reliability);
+                ratings.add(rating);
+
+                Car car = new Car();
+                car.setCarID(inVIN);
+                car.setMake(make);
+                car.setModel(model);
+                car.setYear(year);
+                car.setRatings(ratings);
+
+                aCarRatings.add(car);
+
+            }
+
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return aCarRatings;
     }
 
 }

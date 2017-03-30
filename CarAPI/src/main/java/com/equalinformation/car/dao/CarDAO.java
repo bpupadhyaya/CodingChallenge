@@ -15,4 +15,7 @@ public interface CarDAO {
     boolean deleteCar(String vin);
     boolean addRating(String vin, Rating rating);
     boolean deleteRating(String vin, String reviewedBy);
+    Car getACarOnly(String vin);
+    List<Car> getACarRatings(String vin);
+
 }

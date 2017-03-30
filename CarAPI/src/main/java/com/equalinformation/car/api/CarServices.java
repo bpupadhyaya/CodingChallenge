@@ -146,4 +146,26 @@ public class CarServices {
         return Response.status(200).entity(result).build();
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/cars")
+    public List<Car> getCarsOnlyPOST() {
+        if (PersistenceCheck.DBREADY) {
+            return carDAO.getCarsOnly();
+        } else {
+            return staticCarData.getCarsOnly();
+        }
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/ratings")
+    public List<Car> getRatingsPOST() {
+        if (PersistenceCheck.DBREADY) {
+            return carDAO.getRatings();
+        } else {
+            return staticCarData.getRatings();
+        }
+    }
+
 }

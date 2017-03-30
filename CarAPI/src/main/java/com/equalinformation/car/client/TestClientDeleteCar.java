@@ -9,12 +9,12 @@ import com.sun.jersey.api.client.WebResource;
  */
 public class TestClientDeleteCar {
     public static void main(String...args) {
+        String carID = "M1";
+
         Client client = Client.create();
-        WebResource webResource = client.resource("http://localhost:8080/tesla/api/cars/X1");
+        WebResource webResource = client.resource("http://localhost:8080/tesla/api/cars/delete").path(carID);
 
-        ClientResponse response = webResource.accept("application/json")
-                .delete(ClientResponse.class);
-
+        ClientResponse response = webResource.accept("application/json").delete(ClientResponse.class);
 
         String jsonString = response.getEntity(String.class);
 

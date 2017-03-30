@@ -1,6 +1,7 @@
 package com.equalinformation.car.dao;
 
 import com.equalinformation.car.model.Car;
+import com.equalinformation.car.model.Rating;
 
 import java.util.List;
 
@@ -10,9 +11,8 @@ import java.util.List;
 public interface CarDAO {
     List<Car> getCarsOnly();
     List<Car> getRatings();
-    boolean addCar(String vin);
+    boolean addCar(Car car);
     boolean deleteCar(String vin);
-    boolean addRating(String vin);
-    boolean deleteRating(String vin);
-
+    boolean addRating(String vin, Rating rating);
+    boolean deleteRating(String vin, String reviewedBy);
 }
